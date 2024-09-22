@@ -6,6 +6,6 @@
     "target": "ESNext",
     "sourceMap": true,
     "removeComments": true,
-    "composite": true
+    "incremental": true
   }
 }

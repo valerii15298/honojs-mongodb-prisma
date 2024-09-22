@@ -5,7 +5,7 @@ const app = new Hono();
 
 app.get("/", (c) => c.text("Hello Hono!"));
 
-const port = 3000;
+const port = Number(process.env["PORT"]) || 4001;
 
 // eslint-disable-next-line no-console
 console.log(`Server is running on port ${port}`);

@@ -1,12 +1,12 @@
 services:
-  postgres.localhost:
-    image: postgres:16.3-alpine3.20
+  mongodb.localhost:
+    image: mongo
     env_file:
       - .env
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - "${MONGO_PORT}:${MONGO_PORT}"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${MONGO_PORT} --quiet
       interval: 5s
       retries: 10
       start_period: 5s
@@ -16,7 +16,7 @@ services:
     build:
       context: .
     depends_on:
-      postgres.localhost:
+      mongodb.localhost:
         condition: service_healthy
     env_file:
       - .env

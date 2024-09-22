@@ -1,0 +1,46 @@
+{
+  "name": "montel",
+  "type": "module",
+  "dependencies": {
+    "@hono/node-server": "^1.13.1",
+    "hono": "^4.6.2"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "dev": "tsx watch src/index.ts",
+    "ts": "tsc --noEmit --watch",
+    "ts:check": "tsc --noEmit",
+    "db:push": "pnpm -C api exec drizzle-kit push",
+    "db:studio": "pnpm -C api exec drizzle-kit studio",
+    "db:migrate": "pnpm -C api exec drizzle-kit migrate",
+    "compose": "BUILDKIT_PROGRESS=plain docker compose up --build",
+    "prepare": "husky",
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier . --check",
+    "lint:fix": "eslint --report-unused-disable-directives --max-warnings 0 --fix",
+    "format:fix": "prettier . --write"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,yaml,yml,cjs,mjs,html,css,json}": "prettier --write",
+    "*.{ts,tsx}": "eslint --fix"
+  },
+  "packageManager": "pnpm@9.4.0",
+  "engines": {
+    "vscode": "^1.22.0",
+    "node": "22.3.0",
+    "pnpm": "9.4.0"
+  },
+  "devDependencies": {
+    "@tsconfig/strictest": "^2.0.5",
+    "@types/node": "^22.5.5",
+    "@vpetryniak/eslint-config-base": "^0.0.7",
+    "eslint": "9.11.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "tsx": "^4.7.1",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "8.6.0"
+  },
+  "prettier": {}
+}

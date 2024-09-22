@@ -1,0 +1,25 @@
+services:
+  postgres.localhost:
+    image: postgres:16.3-alpine3.20
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      retries: 10
+      start_period: 5s
+      timeout: 5s
+
+  app.localhost:
+    build:
+      context: .
+    depends_on:
+      postgres.localhost:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${PORT}"
+    # command: /bin/sh -c "while sleep 1000; do :; done" # only for debugging

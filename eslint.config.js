@@ -1,6 +1,8 @@
 // @ts-check
 
 import tsEslint from "typescript-eslint";
+// TODO fix this
+// @ts-ignore
 import baseConfig from "@vpetryniak/eslint-config-base";
 
 export default tsEslint.config(

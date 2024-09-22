@@ -1,12 +1,13 @@
 services:
   mongodb.localhost:
-    image: mongo
+    build:
+      context: ./mongodb_replica
     env_file:
       - .env
     ports:
       - "${MONGO_PORT}:${MONGO_PORT}"
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${MONGO_PORT} --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://${MONGO_HOST}:${MONGO_PORT} --quiet
       interval: 5s
       retries: 10
       start_period: 5s

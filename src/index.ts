@@ -10,6 +10,15 @@ app.get("/", async (c) => {
   return c.json(users);
 });
 
+app.post("/", async (c) => {
+  const newUser = await db.user.create({
+    data: {
+      email: `test${Math.random().toString().slice(2)}@test.com`,
+    },
+  });
+  return c.json(newUser);
+});
+
 const port = Number(process.env["PORT"]) || 4001;
 
 serve({

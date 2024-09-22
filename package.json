@@ -13,7 +13,7 @@
     "ts": "tsc --noEmit --watch",
     "ts:check": "tsc --noEmit",
     "db:push": "pnpm -C api exec drizzle-kit push",
-    "db:studio": "pnpm -C api exec drizzle-kit studio",
+    "db:studio": "prisma studio",
     "db:migrate": "pnpm -C api exec drizzle-kit migrate",
     "compose": "BUILDKIT_PROGRESS=plain docker compose up --build",
     "prepare": "husky",

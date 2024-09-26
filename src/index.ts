@@ -1,22 +1,109 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
+import { UserCreateInputSchema, UserSchema } from "./generated/zod/index.js";
 import { db } from "./prisma.js";
 
-const app = new Hono();
+const app = new OpenAPIHono();
 
-app.get("/", async (c) => {
+// get user by id
+const GetUserParamsSchema = z.object({
+  id: z
+    .string()
+    .min(3)
+    .openapi({
+      param: {
+        name: "id",
+        in: "path",
+      },
+      example: "66f5e368775d5e1f77c6749d",
+    }),
+});
+const getUserByIdRoute = createRoute({
+  method: "get",
+  path: "/users/:id",
+  request: {
+    params: GetUserParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSchema,
+        },
+      },
+      description: "Get user by id",
+    },
+  },
+});
+app.openapi(getUserByIdRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const user = await db.user.findUniqueOrThrow({ where: { id } });
+  return c.json(user);
+});
+// get user by id end
+
+// get users
+const getUsersRoute = createRoute({
+  method: "get",
+  path: "/users",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.array(UserSchema),
+        },
+      },
+      description: "Get all users",
+    },
+  },
+});
+app.openapi(getUsersRoute, async (c) => {
   const users = await db.user.findMany();
   return c.json(users);
 });
+// get users end
 
-app.post("/", async (c) => {
-  const newUser = await db.user.create({
-    data: {
-      email: `test${Math.random().toString().slice(2)}@test.com`,
+// post user
+const createUserRoute = createRoute({
+  method: "post",
+  path: "/users",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: UserCreateInputSchema,
+        },
+      },
     },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSchema,
+        },
+      },
+      description: "Create user",
+    },
+  },
+});
+app.openapi(createUserRoute, async (c) => {
+  const data = c.req.valid("json");
+  const newUser = await db.user.create({
+    data,
   });
   return c.json(newUser);
+});
+// post user end
+
+// The OpenAPI documentation will be available at /doc
+app.doc("/doc", {
+  openapi: "3.0.0",
+  info: {
+    version: "0.0.1",
+    title: "Montel API",
+  },
 });
 
 const port = Number(process.env["PORT"]) || 4001;

@@ -19,4 +19,7 @@ export default tsEslint.config(
   {
     files: ["./src/**/*.ts"],
   },
+  {
+    ignores: ["**/generated"],
+  },
 );

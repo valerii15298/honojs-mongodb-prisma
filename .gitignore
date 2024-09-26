@@ -1,5 +1,7 @@
 dist
 
+**/generated
+
 # dev
 .yarn/
 !.yarn/releases

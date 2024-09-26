@@ -3,11 +3,14 @@
   "type": "module",
   "dependencies": {
     "@hono/node-server": "^1.13.1",
+    "@hono/zod-openapi": "^0.16.0",
     "@prisma/client": "^5.19.1",
-    "hono": "^4.6.2"
+    "hono": "^4.6.2",
+    "zod-prisma-types": "^3.1.8"
   },
   "scripts": {
     "dev": "tsx watch --env-file=.env src/index.ts",
+    "gen": "prisma generate && sed -i '' '1s|.*|import { z } from \"@hono/zod-openapi\"|' src/generated/zod/index.ts",
     "build": "tsc -b tsconfig.build.json --force",
     "clean": "rm -rf node_modules",
     "ts": "tsc --noEmit --watch",

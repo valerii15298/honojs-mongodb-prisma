@@ -65,32 +65,33 @@ zones.openapi(
 );
 
 // create zone
-const createUserRoute = createRoute({
-  method: "post",
-  path: "/",
-  request: {
-    body: {
-      content: {
-        "application/json": {
-          schema: ZoneSchema.omit({ id: true }),
+zones.openapi(
+  createRoute({
+    method: "post",
+    path: "/",
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: ZoneSchema.omit({ id: true }),
+          },
         },
       },
     },
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: ZoneSchema,
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: ZoneSchema,
+          },
         },
+        description: "create zone",
       },
-      description: "create zone",
     },
+  }),
+  async (c) => {
+    const data = c.req.valid("json");
+    const newZone = await db.zone.create({ data });
+    return c.json(newZone);
   },
-});
-
-zones.openapi(createUserRoute, async (c) => {
-  const data = c.req.valid("json");
-  const newZone = await db.zone.create({ data });
-  return c.json(newZone);
-});
+);

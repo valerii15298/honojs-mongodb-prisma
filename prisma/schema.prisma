@@ -70,20 +70,19 @@ model Location {
   privateCode1   String?
   privateCode2   String?
   privateCode3   String?
-  DataStructure  DataStructure[]
+
+  DataStructures DataStructure[]
 }
 
 model Zone {
   code       String @id @map("_id")
   parentCode String /// TODO validate it on insertion // TODO only allow as parent one "001"
+  parent     Zone   @relation("ParentChildZone", fields: [parentCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  childZones Zone[] @relation("ParentChildZone")
 
-  parent     Zone   @relation("ParentZone", fields: [parentCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
-  childZones Zone[] @relation("ParentZone")
-
-  name String
-
-  type  ZoneType[]
+  name  String
   coord Int[]
+  type  ZoneType[]
 
   DataStructures     DataStructure[] @relation(name: "ZoneDataStructuresRelation")
   DataStructuresSink DataStructure[] @relation(name: "SinkZoneDataStructuresRelation")

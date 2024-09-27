@@ -13,21 +13,6 @@ generator zod {
   createRelationValuesTypes = true
 }
 
-model Post {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  userId String @db.ObjectId
-
-  user User @relation(fields: [userId], references: [id])
-}
-
-model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
-  email String /// @zod.custom.use(z.string().email())
-
-  posts Post[]
-}
-
 model DataStructure {
   id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
 

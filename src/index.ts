@@ -5,7 +5,7 @@ import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { UserSchema } from "./generated/zod/index.js";
 import { db } from "./prisma.js";
 
-const app = new OpenAPIHono();
+const app = new OpenAPIHono({ strict: false });
 
 // get user by id
 const GetUserParamsSchema = z.object({

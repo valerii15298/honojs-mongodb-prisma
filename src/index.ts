@@ -17,8 +17,8 @@ const app = new OpenAPIHono<HonoCtx>({
 app.route("/zones", zones);
 
 const pathOpenAPI = "/openapi";
-app.doc(pathOpenAPI, {
-  openapi: "3.0.0",
+app.doc31(pathOpenAPI, {
+  openapi: "3.1.0",
   info: {
     version: "0.0.1",
     title: "Catalogue API",

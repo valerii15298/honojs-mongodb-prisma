@@ -76,7 +76,7 @@ model Location {
 
 model Zone {
   code       String @id @map("_id")
-  parentCode String /// TODO validate it on insertion // TODO only allow as parent one "001"
+  parentCode String
   parent     Zone   @relation("ParentChildZone", fields: [parentCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
   childZones Zone[] @relation("ParentChildZone")
 

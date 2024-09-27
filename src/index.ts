@@ -9,16 +9,13 @@ const app = new OpenAPIHono();
 
 // get user by id
 const GetUserParamsSchema = z.object({
-  id: z
-    .string()
-    .min(3)
-    .openapi({
-      param: {
-        name: "id",
-        in: "path",
-      },
-      example: "66f5e368775d5e1f77c6749d",
-    }),
+  id: UserSchema.shape.id.openapi({
+    param: {
+      name: "id",
+      in: "path",
+    },
+    example: "66f5e368775d5e1f77c6749d",
+  }),
 });
 const getUserByIdRoute = createRoute({
   method: "get",

@@ -11,7 +11,7 @@ COPY --chown=node:node tsconfig.base.json tsconfig.json .env package.json pnpm-l
 RUN pnpm i --frozen-lockfile
 
 COPY --chown=node:node . .
-RUN pnpm exec prisma generate
+RUN pnpm gen
 ENV NODE_ENV=production
 RUN pnpm -r build
 

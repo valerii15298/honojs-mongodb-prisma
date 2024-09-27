@@ -21,7 +21,7 @@ app.doc(pathOpenAPI, {
   openapi: "3.0.0",
   info: {
     version: "0.0.1",
-    title: "Montel API",
+    title: "Catalogue API",
   },
 });
 app.get("/swagger-ui", swaggerUI({ url: pathOpenAPI }));

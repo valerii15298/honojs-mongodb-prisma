@@ -1,12 +1,12 @@
 volumes:
-  montel_mongodb:
-  montel_mongodb_config:
+  mongodb:
+  mongodb_config:
 
 services:
   mongodb.localhost:
     volumes:
-      - montel_mongodb:/data/db
-      - montel_mongodb_config:/data/configdb
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
     build:
       context: ./mongodb_replica
     env_file:

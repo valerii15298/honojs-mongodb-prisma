@@ -1,5 +1,5 @@
 {
-  "name": "montel",
+  "name": "catalogue",
   "type": "module",
   "dependencies": {
     "@hono/node-server": "^1.13.1",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "tsx watch --env-file=.env src/index.ts",
-    "gen": "prisma generate && sed -i '' '1s|.*|import { z } from \"@hono/zod-openapi\"|' src/generated/zod/index.ts",
+    "gen": "prisma generate && echo 'import { z } from \"@hono/zod-openapi\"' > src/generated/zod.ts && cat src/generated/zod/index.ts | tail -n +2 >> src/generated/zod.ts && rm -rf src/generated/zod",
     "build": "tsc -b tsconfig.build.json --force",
     "clean": "rm -rf node_modules",
     "ts": "tsc --noEmit --watch",

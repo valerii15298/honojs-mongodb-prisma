@@ -1,11 +1,17 @@
+import type { Http2Bindings, HttpBindings } from "@hono/node-server";
 import { serve } from "@hono/node-server";
 import { swaggerUI } from "@hono/swagger-ui";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
+import type { PrismaClient } from "@prisma/client";
 
 import { UserSchema } from "./generated/zod/index.js";
 import { db } from "./prisma.js";
 
-const app = new OpenAPIHono({ strict: false });
+const app = new OpenAPIHono<{
+  Bindings: { db: PrismaClient } & (HttpBindings | Http2Bindings);
+}>({
+  strict: false,
+});
 
 // get user by id
 const GetUserParamsSchema = z.object({
@@ -108,7 +114,9 @@ app.get("/swagger-ui", swaggerUI({ url: pathOpenAPI }));
 const port = Number(process.env["PORT"]) || 4001;
 
 serve({
-  fetch: app.fetch,
+  async fetch(req, env) {
+    return app.fetch(req, { ...env, db });
+  },
   port,
 });
 

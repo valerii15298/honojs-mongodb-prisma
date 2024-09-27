@@ -36,7 +36,7 @@ zones.openapi(
   }),
   async (c) => {
     const { code } = c.req.valid("param");
-    const zone = await db.zone.findUniqueOrThrow({ where: { code } });
+    const zone = await db.prisma.zone.findUniqueOrThrow({ where: { code } });
     return c.json(zone);
   },
 );
@@ -58,7 +58,7 @@ zones.openapi(
     },
   }),
   async (c) => {
-    const zones = await db.zone.findMany();
+    const zones = await db.prisma.zone.findMany();
     return c.json(zones);
   },
 );
@@ -90,7 +90,7 @@ zones.openapi(
   }),
   async (c) => {
     const data = c.req.valid("json");
-    const newZone = await db.zone.create({ data });
+    const newZone = await db.createZone({ data });
     return c.json(newZone);
   },
 );
@@ -102,7 +102,6 @@ const UpdateZoneByIdParamsSchema = z.object({
       name: "code",
       in: "path",
     },
-    example: "66f5e368775d5e1f77c6749d",
   }),
 });
 
@@ -134,7 +133,7 @@ zones.openapi(
   async (c) => {
     const { code } = c.req.valid("param");
     const data = c.req.valid("json");
-    const zone = await db.zone.update({ where: { code }, data });
+    const zone = await db.updateZone({ where: { code }, data });
     return c.json(zone);
   },
 );

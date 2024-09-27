@@ -95,3 +95,47 @@ zones.openapi(
     return c.json(newZone);
   },
 );
+
+// update zone by id
+const UpdateZoneByIdParamsSchema = z.object({
+  id: ZoneSchema.shape.id.openapi({
+    param: {
+      name: "id",
+      in: "path",
+    },
+    example: "66f5e368775d5e1f77c6749d",
+  }),
+});
+
+zones.openapi(
+  createRoute({
+    method: "put",
+    path: "/{id}",
+    request: {
+      params: UpdateZoneByIdParamsSchema,
+      body: {
+        content: {
+          "application/json": {
+            schema: ZoneSchema.omit({ id: true }),
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: ZoneSchema,
+          },
+        },
+        description: "update zone by id",
+      },
+    },
+  }),
+  async (c) => {
+    const { id } = c.req.valid("param");
+    const data = c.req.valid("json");
+    const zone = await db.zone.update({ where: { id }, data });
+    return c.json(zone);
+  },
+);

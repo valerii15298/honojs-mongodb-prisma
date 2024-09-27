@@ -1,7 +1,8 @@
 import { serve } from "@hono/node-server";
+import { swaggerUI } from "@hono/swagger-ui";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
-import { UserCreateInputSchema, UserSchema } from "./generated/zod/index.js";
+import { UserSchema } from "./generated/zod/index.js";
 import { db } from "./prisma.js";
 
 const app = new OpenAPIHono();
@@ -72,7 +73,7 @@ const createUserRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: UserCreateInputSchema,
+          schema: UserSchema.partial({ id: true }),
         },
       },
     },
@@ -97,14 +98,15 @@ app.openapi(createUserRoute, async (c) => {
 });
 // post user end
 
-// The OpenAPI documentation will be available at /doc
-app.doc("/doc", {
+const pathOpenAPI = "/openapi";
+app.doc(pathOpenAPI, {
   openapi: "3.0.0",
   info: {
     version: "0.0.1",
     title: "Montel API",
   },
 });
+app.get("/swagger-ui", swaggerUI({ url: pathOpenAPI }));
 
 const port = Number(process.env["PORT"]) || 4001;
 

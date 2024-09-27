@@ -115,5 +115,9 @@
       "scminput": false,
       "yaml": false,
     },
+
+    "[prisma]": {
+      "editor.defaultFormatter": "Prisma.prisma",
+    },
   },
 }

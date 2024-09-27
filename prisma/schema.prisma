@@ -16,7 +16,7 @@ generator zod {
 model Post {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   title  String
-  userId String @db.ObjectId /// @zod.custom.omit([model, input])
+  userId String @db.ObjectId
 
   user User @relation(fields: [userId], references: [id])
 }

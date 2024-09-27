@@ -26,7 +26,11 @@ app.doc31(pathOpenAPI, {
 });
 app.get("/swagger-ui", swaggerUI({ url: pathOpenAPI }));
 
-const port = Number(process.env["PORT"]) || 4001;
+const port = Number(process.env["PORT"]);
+
+if (!port) {
+  throw new Error("PORT env variable is required");
+}
 
 serve({
   async fetch(req, env) {

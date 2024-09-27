@@ -20,7 +20,7 @@ const GetZoneByIdParamsSchema = z.object({
 zones.openapi(
   createRoute({
     method: "get",
-    path: "/:id",
+    path: "/{id}",
     request: {
       params: GetZoneByIdParamsSchema,
     },

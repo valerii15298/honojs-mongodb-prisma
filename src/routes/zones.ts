@@ -8,19 +8,18 @@ export const zones = new OpenAPIHono<HonoCtx>();
 
 // get zone by id
 const GetZoneByIdParamsSchema = z.object({
-  id: ZoneSchema.shape.id.openapi({
+  code: ZoneSchema.shape.code.openapi({
     param: {
-      name: "id",
+      name: "code",
       in: "path",
     },
-    example: "66f5e368775d5e1f77c6749d",
   }),
 });
 
 zones.openapi(
   createRoute({
     method: "get",
-    path: "/{id}",
+    path: "/{code}",
     request: {
       params: GetZoneByIdParamsSchema,
     },
@@ -36,8 +35,8 @@ zones.openapi(
     },
   }),
   async (c) => {
-    const { id } = c.req.valid("param");
-    const zone = await db.zone.findUniqueOrThrow({ where: { id } });
+    const { code } = c.req.valid("param");
+    const zone = await db.zone.findUniqueOrThrow({ where: { code } });
     return c.json(zone);
   },
 );
@@ -73,7 +72,7 @@ zones.openapi(
       body: {
         content: {
           "application/json": {
-            schema: ZoneSchema.omit({ id: true }),
+            schema: ZoneSchema,
           },
         },
       },
@@ -98,9 +97,9 @@ zones.openapi(
 
 // update zone by id
 const UpdateZoneByIdParamsSchema = z.object({
-  id: ZoneSchema.shape.id.openapi({
+  code: ZoneSchema.shape.code.openapi({
     param: {
-      name: "id",
+      name: "code",
       in: "path",
     },
     example: "66f5e368775d5e1f77c6749d",
@@ -110,13 +109,13 @@ const UpdateZoneByIdParamsSchema = z.object({
 zones.openapi(
   createRoute({
     method: "put",
-    path: "/{id}",
+    path: "/{code}",
     request: {
       params: UpdateZoneByIdParamsSchema,
       body: {
         content: {
           "application/json": {
-            schema: ZoneSchema.omit({ id: true }),
+            schema: ZoneSchema.omit({ code: true }),
           },
         },
       },
@@ -133,9 +132,9 @@ zones.openapi(
     },
   }),
   async (c) => {
-    const { id } = c.req.valid("param");
+    const { code } = c.req.valid("param");
     const data = c.req.valid("json");
-    const zone = await db.zone.update({ where: { id }, data });
+    const zone = await db.zone.update({ where: { code }, data });
     return c.json(zone);
   },
 );

@@ -14,67 +14,79 @@ generator zod {
 }
 
 model DataStructure {
-  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+  id String @id @map("_id")
 
-  ID                  String
-  description         String
-  commodity           String
-  loadProfile         String?
-  resolution          String
-  supportedResolution String[]
-  period              String
-  fuels               String[]
-  source              String
-  market              String
-  timezone            String
-  supportedTimezone   String[] // maybe call it supportedTimezones?
-  unit                String
-  supportedUnit       String[] // maybe call it supportedUnits?
-  locationCode        String
-  zoneCode            String
-  sinkZoneCode        String
-  dataType            String
-  dataCategories      String[]
-  platform            String
-  platformRef         String
+  zone     Zone?   @relation(name: "ZoneDataStructuresRelation", fields: [zoneCode], references: [code])
+  zoneCode String?
+
+  sinkZone     Zone?   @relation(name: "SinkZoneDataStructuresRelation", fields: [sinkZoneCode], references: [code])
+  sinkZoneCode String?
+
+  location     Location? @relation(fields: [locationCode], references: [code])
+  locationCode String?
+
+  description          String?
+  commodity            String?
+  loadProfile          String?
+  resolution           String
+  supportedResolutions String[]
+  period               String?
+  fuels                String[]
+  source               String?
+  market               String?
+  timezone             String
+  supportedTimezones   String[]
+  unit                 String
+  supportedUnits       String[]
+
+  dataType       String
+  dataCategories String[]
+  platform       String
+  platformRef    String
 }
 
 model Location {
-  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+  code String @id @map("_id")
 
-  code           String @unique
-  efficiency     String
-  name           String
-  plant          String
-  fuel           String
-  detailedfuel   String
-  operator       String
-  techowner      String
-  location       String
-  syszone        String
-  region         String
-  capacity       String
-  commissionyear String
-  connection     String
-  technology     String
-  turbines       String
-  latlong        String
-  unitType       String
-  publiccode1    String
-  publiccode2    String
-  privatecode1   String
-  privatecode2   String
-  privatecode3   String
+  efficiency     String?
+  name           String?
+  plant          String?
+  fuel           String?
+  detailedFuel   String?
+  operator       String?
+  techowner      String?
+  location       String?
+  syszone        String?
+  region         String?
+  capacity       String?
+  commissionYear String?
+  connection     String?
+  technology     String?
+  turbines       String?
+  latlong        String?
+  unitType       String?
+  publiCode1     String?
+  publicCode2    String?
+  privateCode1   String?
+  privateCode2   String?
+  privateCode3   String?
+  DataStructure  DataStructure[]
 }
 
 model Zone {
-  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+  code       String @id @map("_id")
+  parentCode String /// TODO validate it on insertion // TODO only allow as parent one "001"
 
-  code   String     @unique
-  name   String
-  parent String?
-  type   ZoneType[]
-  coord  Int[]
+  parent     Zone   @relation("ParentZone", fields: [parentCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  childZones Zone[] @relation("ParentZone")
+
+  name String
+
+  type  ZoneType[]
+  coord Int[]
+
+  DataStructures     DataStructure[] @relation(name: "ZoneDataStructuresRelation")
+  DataStructuresSink DataStructure[] @relation(name: "SinkZoneDataStructuresRelation")
 }
 
 enum ZoneType {

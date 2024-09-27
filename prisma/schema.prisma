@@ -27,3 +27,75 @@ model User {
 
   posts Post[]
 }
+
+model DataStructure {
+  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+
+  ID                  String
+  description         String
+  commodity           String
+  loadProfile         String?
+  resolution          String
+  supportedResolution String[]
+  period              String
+  fuels               String[]
+  source              String
+  market              String
+  timezone            String
+  supportedTimezone   String[] // maybe call it supportedTimezones?
+  unit                String
+  supportedUnit       String[] // maybe call it supportedUnits?
+  locationCode        String
+  zoneCode            String
+  sinkZoneCode        String
+  dataType            String
+  dataCategories      String[]
+  platform            String
+  platformRef         String
+}
+
+model Location {
+  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+
+  code           String @unique
+  efficiency     String
+  name           String
+  plant          String
+  fuel           String
+  detailedfuel   String
+  operator       String
+  techowner      String
+  location       String
+  syszone        String
+  region         String
+  capacity       String
+  commissionyear String
+  connection     String
+  technology     String
+  turbines       String
+  latlong        String
+  unitType       String
+  publiccode1    String
+  publiccode2    String
+  privatecode1   String
+  privatecode2   String
+  privatecode3   String
+}
+
+model Zone {
+  id String @id @default(auto()) @map("_id") @db.ObjectId /// @zod.custom.use(z.string().length(24))
+
+  code   String     @unique
+  name   String
+  parent String?
+  type   ZoneType[]
+  coord  Int[]
+}
+
+enum ZoneType {
+  region
+  subregion
+  country
+  subdivision
+  price
+}

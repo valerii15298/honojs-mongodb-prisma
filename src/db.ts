@@ -112,7 +112,21 @@ export const db = {
     return prisma.zone.update(args);
   },
 
-  async deleteAllZones() {
+  async deleteAllData() {
+    await this.deleteAllDataStructures();
+    await this.deleteAllLocations();
+    await this.deleteZones();
+  },
+
+  async deleteAllDataStructures() {
+    return prisma.dataStructure.deleteMany();
+  },
+
+  async deleteAllLocations() {
+    return prisma.location.deleteMany();
+  },
+
+  async deleteZones() {
     while (true as boolean) {
       const zones = await prisma.zone.findMany();
       if (zones.length === 0) {

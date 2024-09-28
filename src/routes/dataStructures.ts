@@ -6,8 +6,7 @@ import type { HonoCtx } from "../index.js";
 
 export const dataStructures = new OpenAPIHono<HonoCtx>();
 
-// get dataStructure by id
-const GetDataStructureByIdParamsSchema = z.object({
+const DataStructureByIdParamsSchema = z.object({
   id: DataStructureSchema.shape.id.openapi({
     param: {
       name: "id",
@@ -21,7 +20,7 @@ dataStructures.openapi(
     method: "get",
     path: "/{id}",
     request: {
-      params: GetDataStructureByIdParamsSchema,
+      params: DataStructureByIdParamsSchema,
     },
     responses: {
       200: {
@@ -43,7 +42,6 @@ dataStructures.openapi(
   },
 );
 
-// get all dataStructures
 dataStructures.openapi(
   createRoute({
     method: "get",
@@ -65,7 +63,6 @@ dataStructures.openapi(
   },
 );
 
-// create dataStructure
 dataStructures.openapi(
   createRoute({
     method: "post",
@@ -97,22 +94,12 @@ dataStructures.openapi(
   },
 );
 
-// update dataStructure by id
-const UpdateDataStructureByIdParamsSchema = z.object({
-  id: DataStructureSchema.shape.id.openapi({
-    param: {
-      name: "id",
-      in: "path",
-    },
-  }),
-});
-
 dataStructures.openapi(
   createRoute({
     method: "put",
     path: "/{id}",
     request: {
-      params: UpdateDataStructureByIdParamsSchema,
+      params: DataStructureByIdParamsSchema,
       body: {
         content: {
           "application/json": {

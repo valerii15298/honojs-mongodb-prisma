@@ -126,3 +126,28 @@ locations.openapi(
     return c.json(location);
   },
 );
+
+locations.openapi(
+  createRoute({
+    method: "delete",
+    path: "/{code}",
+    request: {
+      params: LocationByIdParamsSchema,
+    },
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: LocationSchema,
+          },
+        },
+        description: "delete location by code",
+      },
+    },
+  }),
+  async (c) => {
+    const { code } = c.req.valid("param");
+    const location = await db.prisma.location.delete({ where: { code } });
+    return c.json(location);
+  },
+);

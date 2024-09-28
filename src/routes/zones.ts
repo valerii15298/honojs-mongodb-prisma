@@ -6,8 +6,7 @@ import type { HonoCtx } from "../index.js";
 
 export const zones = new OpenAPIHono<HonoCtx>();
 
-// get zone by code
-const GetZoneByIdParamsSchema = z.object({
+const ZoneByCodeParamsSchema = z.object({
   code: ZoneSchema.shape.code.openapi({
     param: {
       name: "code",
@@ -21,7 +20,7 @@ zones.openapi(
     method: "get",
     path: "/{code}",
     request: {
-      params: GetZoneByIdParamsSchema,
+      params: ZoneByCodeParamsSchema,
     },
     responses: {
       200: {
@@ -30,7 +29,7 @@ zones.openapi(
             schema: ZoneSchema,
           },
         },
-        description: "get zone by id",
+        description: "get zone by code",
       },
     },
   }),
@@ -41,7 +40,6 @@ zones.openapi(
   },
 );
 
-// get all zones
 zones.openapi(
   createRoute({
     method: "get",
@@ -63,7 +61,6 @@ zones.openapi(
   },
 );
 
-// create zone
 zones.openapi(
   createRoute({
     method: "post",
@@ -95,22 +92,12 @@ zones.openapi(
   },
 );
 
-// update zone by code
-const UpdateZoneByIdParamsSchema = z.object({
-  code: ZoneSchema.shape.code.openapi({
-    param: {
-      name: "code",
-      in: "path",
-    },
-  }),
-});
-
 zones.openapi(
   createRoute({
     method: "put",
     path: "/{code}",
     request: {
-      params: UpdateZoneByIdParamsSchema,
+      params: ZoneByCodeParamsSchema,
       body: {
         content: {
           "application/json": {
@@ -126,7 +113,7 @@ zones.openapi(
             schema: ZoneSchema,
           },
         },
-        description: "update zone by id",
+        description: "update zone by code",
       },
     },
   }),
@@ -134,6 +121,31 @@ zones.openapi(
     const { code } = c.req.valid("param");
     const data = c.req.valid("json");
     const zone = await db.updateZone({ where: { code }, data });
+    return c.json(zone);
+  },
+);
+
+zones.openapi(
+  createRoute({
+    method: "delete",
+    path: "/{code}",
+    request: {
+      params: ZoneByCodeParamsSchema,
+    },
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: ZoneSchema,
+          },
+        },
+        description: "delete zone by code",
+      },
+    },
+  }),
+  async (c) => {
+    const { code } = c.req.valid("param");
+    const zone = await db.prisma.zone.delete({ where: { code } });
     return c.json(zone);
   },
 );

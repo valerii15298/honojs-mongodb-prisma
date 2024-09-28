@@ -129,3 +129,30 @@ dataStructures.openapi(
     return c.json(dataStructure);
   },
 );
+
+dataStructures.openapi(
+  createRoute({
+    method: "delete",
+    path: "/{id}",
+    request: {
+      params: DataStructureByIdParamsSchema,
+    },
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: DataStructureSchema,
+          },
+        },
+        description: "delete dataStructure by id",
+      },
+    },
+  }),
+  async (c) => {
+    const { id } = c.req.valid("param");
+    const dataStructure = await db.prisma.dataStructure.delete({
+      where: { id },
+    });
+    return c.json(dataStructure);
+  },
+);

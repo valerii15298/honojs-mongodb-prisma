@@ -1,8 +1,8 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
+import { db } from "../db.js";
 import { ZoneSchema } from "../generated/zod.js";
 import type { HonoCtx } from "../index.js";
-import { db } from "../prisma.js";
 
 export const zones = new OpenAPIHono<HonoCtx>();
 

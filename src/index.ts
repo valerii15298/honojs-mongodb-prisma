@@ -4,7 +4,7 @@ import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import type { PrismaClient } from "@prisma/client";
 
-import { db } from "./prisma.js";
+import { db } from "./db.js";
 import { zones } from "./routes/zones.js";
 
 export interface HonoCtx {

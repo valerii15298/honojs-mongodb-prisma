@@ -6,7 +6,7 @@ import type { HonoCtx } from "../index.js";
 
 export const locations = new OpenAPIHono<HonoCtx>();
 
-// get location by id
+// get location by code
 const GetLocationByIdParamsSchema = z.object({
   code: LocationSchema.shape.code.openapi({
     param: {
@@ -97,7 +97,7 @@ locations.openapi(
   },
 );
 
-// update location by id
+// update location by code
 const UpdateLocationByIdParamsSchema = z.object({
   code: LocationSchema.shape.code.openapi({
     param: {

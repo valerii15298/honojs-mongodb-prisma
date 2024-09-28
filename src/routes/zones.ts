@@ -6,7 +6,7 @@ import type { HonoCtx } from "../index.js";
 
 export const zones = new OpenAPIHono<HonoCtx>();
 
-// get zone by id
+// get zone by code
 const GetZoneByIdParamsSchema = z.object({
   code: ZoneSchema.shape.code.openapi({
     param: {
@@ -95,7 +95,7 @@ zones.openapi(
   },
 );
 
-// update zone by id
+// update zone by code
 const UpdateZoneByIdParamsSchema = z.object({
   code: ZoneSchema.shape.code.openapi({
     param: {

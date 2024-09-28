@@ -5,6 +5,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import type { PrismaClient } from "@prisma/client";
 
 import { db } from "./db.js";
+import { dataStructures } from "./routes/dataStructures.js";
 import { zones } from "./routes/zones.js";
 
 export interface HonoCtx {
@@ -15,6 +16,7 @@ const app = new OpenAPIHono<HonoCtx>({
 });
 
 app.route("/zones", zones);
+app.route("/data-structures", dataStructures);
 
 const pathOpenAPI = "/openapi";
 app.doc31(pathOpenAPI, {

@@ -6,8 +6,7 @@ import type { HonoCtx } from "../index.js";
 
 export const locations = new OpenAPIHono<HonoCtx>();
 
-// get location by code
-const GetLocationByIdParamsSchema = z.object({
+const LocationByIdParamsSchema = z.object({
   code: LocationSchema.shape.code.openapi({
     param: {
       name: "code",
@@ -21,7 +20,7 @@ locations.openapi(
     method: "get",
     path: "/{code}",
     request: {
-      params: GetLocationByIdParamsSchema,
+      params: LocationByIdParamsSchema,
     },
     responses: {
       200: {
@@ -30,7 +29,7 @@ locations.openapi(
             schema: LocationSchema,
           },
         },
-        description: "get location by id",
+        description: "get location by code",
       },
     },
   }),
@@ -43,7 +42,6 @@ locations.openapi(
   },
 );
 
-// get all locations
 locations.openapi(
   createRoute({
     method: "get",
@@ -65,7 +63,6 @@ locations.openapi(
   },
 );
 
-// create location
 locations.openapi(
   createRoute({
     method: "post",
@@ -97,22 +94,12 @@ locations.openapi(
   },
 );
 
-// update location by code
-const UpdateLocationByIdParamsSchema = z.object({
-  code: LocationSchema.shape.code.openapi({
-    param: {
-      name: "code",
-      in: "path",
-    },
-  }),
-});
-
 locations.openapi(
   createRoute({
     method: "put",
     path: "/{code}",
     request: {
-      params: UpdateLocationByIdParamsSchema,
+      params: LocationByIdParamsSchema,
       body: {
         content: {
           "application/json": {
@@ -128,7 +115,7 @@ locations.openapi(
             schema: LocationSchema,
           },
         },
-        description: "update location by id",
+        description: "update location by code",
       },
     },
   }),

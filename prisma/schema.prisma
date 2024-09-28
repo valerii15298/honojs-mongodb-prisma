@@ -16,13 +16,13 @@ generator zod {
 model DataStructure {
   id String @id @map("_id")
 
-  zone     Zone?   @relation(name: "ZoneDataStructuresRelation", fields: [zoneCode], references: [code])
+  zone     Zone?   @relation(name: "ZoneDataStructuresRelation", fields: [zoneCode], references: [code], onUpdate: Cascade, onDelete: SetNull)
   zoneCode String?
 
-  sinkZone     Zone?   @relation(name: "SinkZoneDataStructuresRelation", fields: [sinkZoneCode], references: [code])
+  sinkZone     Zone?   @relation(name: "SinkZoneDataStructuresRelation", fields: [sinkZoneCode], references: [code], onUpdate: Cascade, onDelete: SetNull)
   sinkZoneCode String?
 
-  location     Location? @relation(fields: [locationCode], references: [code])
+  location     Location? @relation(fields: [locationCode], references: [code], onUpdate: Cascade, onDelete: SetNull)
   locationCode String?
 
   description          String?
